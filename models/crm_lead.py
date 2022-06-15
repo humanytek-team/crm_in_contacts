@@ -19,7 +19,7 @@ class Lead(models.Model):
 
     def _set_last_crm_id_in_partner(self):
         for lead in self:
-            lead.user_id.partner_id.last_crm_lead_id = lead.id
+            lead.partner_id.last_crm_lead_id = lead.id
 
     def set_last_activity_info(self, activity_type_name):
         self.last_activity_date = fields.Datetime.now()
