@@ -10,11 +10,11 @@ class Partner(models.Model):
     )
     last_crm_lead_datetime = fields.Datetime(
         related="last_crm_lead_id.create_date",
-        string="Last Opportunity",
     )
     last_crm_lead_date = fields.Date(
         compute="_compute_last_crm_lead_date",
         store=True,
+        string="Last Opportunity",
     )
     last_activity_date = fields.Date(
         related="last_crm_lead_id.last_activity_date",
