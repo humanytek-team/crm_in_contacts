@@ -9,6 +9,7 @@ class Partner(models.Model):
         readonly=True,
     )
     last_crm_lead_datetime = fields.Datetime(
+        string="Last Opportunity Date",
         related="last_crm_lead_id.create_date",
     )
     last_crm_lead_date = fields.Date(
