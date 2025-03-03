@@ -1,7 +1,7 @@
 {
     "name": "CRM in Contacts",
     "author": "HomebrewSoft",
-    "version": "17.0.0.1.0",
+    "version": "1.0",
     "website": "https://homebrewsoft.dev",
     "license": "LGPL-3",
     "depends": [
