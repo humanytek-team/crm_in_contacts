@@ -35,9 +35,8 @@ class Partner(models.Model):
         string="Next Activity",
         store=True,
     )
-    next_activity_type_name = fields.Char(
-        related="next_activity_id.activity_type_id.name",
-        string="Type Activity",
+    next_activity_activity_type_id = fields.Many2one(
+        related="next_activity_id.activity_type_id",
         store=True,
     )
 

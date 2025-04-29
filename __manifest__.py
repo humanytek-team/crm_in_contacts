@@ -14,5 +14,4 @@
         # views
         "views/res_partner.xml",
     ],
-    "installable": False,
 }
