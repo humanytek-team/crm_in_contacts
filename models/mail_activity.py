@@ -4,7 +4,7 @@ from odoo import api, fields, models
 class MailActivity(models.Model):
     _inherit = "mail.activity"
 
-    @api.model
+    @api.model_create_multi
     def create(self, values):
         res = super().create(values)
         res._set_next_activity_from_crm_in_partner()
