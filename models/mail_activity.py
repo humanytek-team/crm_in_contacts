@@ -20,6 +20,7 @@ class MailActivity(models.Model):
                 continue
             lead = self.env["crm.lead"].browse(activity.res_id)
             lead.set_last_activity_info(activity.activity_type_id.name)
+            lead._set_last_crm_id_in_partner()
 
     def _set_next_activity_from_crm_in_partner(self):
         for activity in self:
