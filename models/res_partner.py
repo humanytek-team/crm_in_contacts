@@ -11,32 +11,34 @@ class Partner(models.Model):
     last_crm_lead_datetime = fields.Datetime(
         string="Last Opportunity Date",
         related="last_crm_lead_id.create_date",
+        store=True,
     )
     last_crm_lead_date = fields.Date(
         compute="_compute_last_crm_lead_date",
         store=True,
         string="Last Opportunity",
     )
+
     last_activity_date = fields.Date(
-        related="last_crm_lead_id.last_activity_date",
         string="Last Activity",
-        store=True,
     )
-    last_activity_type_name = fields.Char(
-        related="last_crm_lead_id.last_activity_type_name",
-        string="Type Activity",
-        store=True,
+    last_activity_type_id = fields.Many2one(
+        comodel_name="mail.activity.type",
+        string="Last Activity Type",
     )
-    next_activity_id = fields.Many2one(
-        related="last_crm_lead_id.next_activity_id",
+    next_crm_activity_id = fields.Many2one(
+        comodel_name="mail.activity",
+        string="Next CRM Activity",
     )
     next_activity_date = fields.Date(
-        related="next_activity_id.date_deadline",
         string="Next Activity",
+        related="next_crm_activity_id.date_deadline",
         store=True,
     )
     next_activity_activity_type_id = fields.Many2one(
-        related="next_activity_id.activity_type_id",
+        comodel_name="mail.activity.type",
+        string="Next Activity Type",
+        related="next_crm_activity_id.activity_type_id",
         store=True,
     )
 
