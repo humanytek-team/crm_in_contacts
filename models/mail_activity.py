@@ -50,6 +50,7 @@ class MailActivity(models.Model):
                 [
                     ("res_model", "=", "crm.lead"),
                     ("date_deadline", ">=", activity.date_deadline),
+                    ("date_deadline", ">=", fields.Date.today()),
                     ("crm_partner_id", "=", partner.id),
                     ("id", "!=", activity.id),
                 ],
@@ -65,6 +66,8 @@ class MailActivity(models.Model):
             lead = self.env["crm.lead"].browse(activity.res_id)
             partner = lead.partner_id
             if not partner:
+                continue
+            if activity.date_deadline < fields.Date.today():
                 continue
             if (
                 not partner.next_activity_date
