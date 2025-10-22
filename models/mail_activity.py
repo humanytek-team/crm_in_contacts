@@ -39,18 +39,14 @@ class MailActivity(models.Model):
             partner = lead.partner_id
             if not partner:
                 continue
-            if (
-                not partner.last_activity_date
-                or activity.date_deadline
-                > partner.last_activity_date  # TODO revisar si usar date_deadline
-            ):
-                partner.last_activity_date = activity.date_deadline
+            today = fields.Date.today()
+            if not partner.last_activity_date or today > partner.last_activity_date:
+                partner.last_activity_date = today
                 partner.last_activity_type_id = activity.activity_type_id
             next_activity = self.search(
                 [
                     ("res_model", "=", "crm.lead"),
-                    ("date_deadline", ">=", activity.date_deadline),
-                    ("date_deadline", ">=", fields.Date.today()),
+                    ("date_deadline", ">=", today),
                     ("crm_partner_id", "=", partner.id),
                     ("id", "!=", activity.id),
                 ],
@@ -74,3 +70,36 @@ class MailActivity(models.Model):
                 or activity.date_deadline < partner.next_activity_date
             ):
                 partner.next_crm_activity_id = activity
+
+
+# Server action
+# leads = env["crm.lead"].search([("partner_id", "!=", False)])
+# partners = {}
+# for lead in leads:
+#     if not lead.message_ids.filtered(lambda m: m.mail_activity_type_id):
+#         continue
+#     latest_message = lead.message_ids.filtered(
+#         lambda m: m.mail_activity_type_id
+#     ).sorted(key=lambda m: m.date, reverse=True)[0]
+#     if lead.partner_id.id not in partners:
+#         partners[lead.partner_id.id] = (
+#             latest_message.mail_activity_type_id,
+#             latest_message.date,
+#         )
+#     if latest_message.date > partners[lead.partner_id.id][1]:
+#         partners[lead.partner_id.id] = (
+#             latest_message.mail_activity_type_id.id,
+#             latest_message.date,
+#         )
+
+# for partner_id, (activity_type, date) in partners.items():
+#     env["res.partner"].browse(partner_id).write(
+#         {
+#             "last_activity_date": date,
+#             "last_activity_type_id": activity_type,
+#         }
+#     )
+
+# crm_activities = env["mail.activity"].search([("res_model", "=", "crm.lead")])
+# crm_activities._compute_crm_partner_id()
+# crm_activities._set_next_activity_in_partner_if_needed()
